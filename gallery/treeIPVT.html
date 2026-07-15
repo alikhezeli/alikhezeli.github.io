@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Presentation Video Player</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            background: #111;
+            color: white;
+            font-family: Arial, sans-serif;
+            padding: 10px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        h1 {
+            font-size: 1.5em;
+            margin-bottom: 5px;
+        }
+        
+        .header p {
+            color: #aaa;
+            font-size: 0.9em;
+        }
+        
+        .video-container {
+            background: black;
+            border-radius: 8px 8px 0 0;
+            overflow: hidden;
+            margin-bottom: 0;
+            width: 100%;
+        }
+        
+        #myVideo {
+            width: 100%;
+            height: auto;
+            display: block;
+            max-height: 90vh; /* Fits screen */
+        }
+        
+        /* Custom controls below video */
+        .controls {
+            background: #222;
+            padding: 12px 15px;
+            border-radius: 0 0 8px 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+        }
+        
+        .controls-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        button {
+            background: #444;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: background 0.2s;
+            min-width: 60px;
+            white-space: nowrap;
+        }
+        
+        button:hover {
+            background: #555;
+        }
+        
+        .play-btn {
+            background: #0066cc;
+            font-weight: bold;
+        }
+        
+        .play-btn:hover {
+            background: #0077ee;
+        }
+        
+        .time-display {
+            color: #ccc;
+            font-family: monospace;
+            font-size: 13px;
+            min-width: 100px;
+        }
+        
+        .progress-container {
+            flex-grow: 1;
+            min-width: 150px;
+            max-width: 400px;
+        }
+        
+        progress {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        
+        progress::-webkit-progress-bar {
+            background-color: #333;
+            border-radius: 3px;
+        }
+        
+        progress::-webkit-progress-value {
+            background-color: #0066cc;
+            border-radius: 3px;
+        }
+        
+        /* Speed controls */
+        .speed-controls {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .speed-btn {
+            background: #333;
+            min-width: 35px;
+            padding: 4px 8px;
+            font-size: 12px;
+        }
+        
+        .speed-btn.active {
+            background: #0066cc;
+        }
+        
+        .speed-display {
+            color: #ccc;
+            font-size: 13px;
+            min-width: 50px;
+        }
+        
+        /* Volume control */
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        input[type="range"] {
+            width: 60px;
+            cursor: pointer;
+        }
+        
+        .fullscreen-btn {
+            background: #333;
+        }
+        
+        .instructions {
+            color: #888;
+            font-size: 11px;
+            margin-top: 10px;
+            text-align: center;
+            line-height: 1.4;
+        }
+        
+        .shortcuts {
+            display: inline-block;
+            background: #222;
+            padding: 6px 10px;
+            border-radius: 4px;
+            margin-top: 5px;
+            font-family: monospace;
+            font-size: 11px;
+            max-width: 100%;
+            overflow-wrap: break-word;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .controls-row {
+                gap: 8px;
+            }
+            
+            button {
+                padding: 5px 10px;
+                font-size: 12px;
+                min-width: 50px;
+            }
+            
+            .time-display {
+                font-size: 12px;
+                min-width: 80px;
+            }
+            
+            .speed-btn {
+                min-width: 30px;
+                font-size: 11px;
+                padding: 3px 6px;
+            }
+            
+            #myVideo {
+                max-height: 50vh;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .controls {
+                padding: 10px;
+            }
+            
+            .controls-row {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .progress-container {
+                width: 100%;
+                max-width: none;
+            }
+            
+            #myVideo {
+                max-height: 40vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <div class="video-container">
+            <video id="myVideo" poster="treeIPVT/treeIPVT.png">
+                <source src="treeIPVT/treeIPVT_animation.mp4" type="video/mp4">
+                Your browser does not support HTML5 video.
+            </video>
+        </div>
+        
+        <div class="controls">
+            <div class="controls-row">
+                <button class="play-btn" onclick="togglePlay()" id="playBtn">▶ Play</button>
+                <div class="time-display">
+                    <span id="currentTime">0:00</span> / 
+                    <span id="duration">0:00</span>
+                </div>
+                <div class="progress-container">
+                    <progress id="progressBar" value="0" max="100"></progress>
+                </div>
+            </div>
+            
+            <div class="controls-row">
+                <div class="volume-control">
+                    <button onclick="toggleMute()" id="muteBtn">🔊</button>
+                    <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="1">
+                </div>
+                
+                <div class="speed-controls">
+                    <span style="color:#aaa; font-size:13px;">Speed:</span>
+                    <button class="speed-btn" onclick="setSpeed(0.25)">0.25x</button>
+                    <button class="speed-btn" onclick="setSpeed(0.5)">0.5x</button>
+                    <button class="speed-btn active" onclick="setSpeed(1)">1x</button>
+                    <button class="speed-btn" onclick="setSpeed(2)">2x</button>
+                    <div class="speed-display" id="speedDisplay">1.0x</div>
+                </div>
+                
+                <button class="fullscreen-btn" onclick="toggleFullscreen()">⛶ Fullscreen</button>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <p>
+                <strong>Keyboard Shortcuts:</strong>
+                <div class="shortcuts">
+                    Space = Play/Pause • ← → = Seek 5s • ↑ ↓ = Speed • F = Fullscreen • M = Mute
+                </div>
+            </p>
+            <p>Close this window to return to the presentation.</p>
+        </div>
+    </div>
+
+    <script>
+        const video = document.getElementById('myVideo');
+        const progressBar = document.getElementById('progressBar');
+        const currentTimeEl = document.getElementById('currentTime');
+        const durationEl = document.getElementById('duration');
+        const playBtn = document.getElementById('playBtn');
+        const muteBtn = document.getElementById('muteBtn');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const speedDisplay = document.getElementById('speedDisplay');
+        
+        let currentSpeed = 1.0;
+        
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+        
+        video.addEventListener('timeupdate', function() {
+            const progress = (video.currentTime / video.duration) * 100;
+            progressBar.value = progress;
+            currentTimeEl.textContent = formatTime(video.currentTime);
+        });
+        
+        video.addEventListener('loadedmetadata', function() {
+            durationEl.textContent = formatTime(video.duration);
+        });
+        
+        progressBar.addEventListener('click', function(e) {
+            const rect = this.getBoundingClientRect();
+            const pos = (e.clientX - rect.left) / rect.width;
+            video.currentTime = pos * video.duration;
+        });
+        
+        function togglePlay() {
+            if (video.paused) {
+                video.play();
+                playBtn.textContent = '⏸ Pause';
+            } else {
+                video.pause();
+                playBtn.textContent = '▶ Play';
+            }
+        }
+        
+        function setSpeed(speed) {
+            currentSpeed = speed;
+            video.playbackRate = speed;
+            speedDisplay.textContent = speed.toFixed(2) + 'x';
+            
+            document.querySelectorAll('.speed-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+        
+        function changeSpeed(delta) {
+            const speeds = [0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0];
+            let newSpeed = currentSpeed + delta;
+            
+            let closest = speeds.reduce((prev, curr) => {
+                return Math.abs(curr - newSpeed) < Math.abs(prev - newSpeed) ? curr : prev;
+            });
+            
+            closest = Math.max(0.25, Math.min(2.0, closest));
+            setSpeed(closest);
+        }
+        
+        volumeSlider.addEventListener('input', function() {
+            video.volume = this.value;
+            updateMuteButton();
+        });
+        
+        function toggleMute() {
+            video.muted = !video.muted;
+            updateMuteButton();
+        }
+        
+        function updateMuteButton() {
+            if (video.muted || video.volume === 0) {
+                muteBtn.textContent = '🔇';
+                volumeSlider.value = 0;
+            } else {
+                muteBtn.textContent = '🔊';
+                volumeSlider.value = video.volume;
+            }
+        }
+        
+        function toggleFullscreen() {
+            const container = document.querySelector('.video-container');
+            if (!document.fullscreenElement) {
+                if (container.requestFullscreen) {
+                    container.requestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            switch(e.code) {
+                case 'Space':
+                    e.preventDefault();
+                    togglePlay();
+                    break;
+                    
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    video.currentTime = Math.max(0, video.currentTime - 5);
+                    break;
+                    
+                case 'ArrowRight':
+                    e.preventDefault();
+                    video.currentTime = Math.min(video.duration, video.currentTime + 5);
+                    break;
+                    
+                case 'ArrowUp':
+                    e.preventDefault();
+                    changeSpeed(0.25);
+                    break;
+                    
+                case 'ArrowDown':
+                    e.preventDefault();
+                    changeSpeed(-0.25);
+                    break;
+                    
+                case 'KeyF':
+                    e.preventDefault();
+                    toggleFullscreen();
+                    break;
+                    
+                case 'KeyM':
+                    e.preventDefault();
+                    toggleMute();
+                    break;
+                    
+                case 'Digit1':
+                case 'Numpad1':
+                    e.preventDefault();
+                    setSpeed(1.0);
+                    break;
+                    
+                case 'Digit2':
+                case 'Numpad2':
+                    e.preventDefault();
+                    setSpeed(2.0);
+                    break;
+            }
+        });
+        
+        video.load();
+        updateMuteButton();
+        
+        progressBar.addEventListener('keydown', function(e) {
+            if (e.code === 'ArrowLeft') {
+                video.currentTime = Math.max(0, video.currentTime - 5);
+            } else if (e.code === 'ArrowRight') {
+                video.currentTime = Math.min(video.duration, video.currentTime + 5);
+            }
+        });
+    </script>
+</body>
+</html>
