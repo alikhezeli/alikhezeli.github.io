@@ -1382,3 +1382,46 @@ section,
     
 }
 
+.social-links a i {
+    font-size: 22px;
+    line-height: 1;
+}
+
+/* Portfolio: image + caption as one clickable item */
+
+.portfolio-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.portfolio-content {
+  overflow: hidden;
+}
+
+.portfolio-content img {
+  display: block;
+  width: 100%;
+}
+
+.portfolio .portfolio-info {
+  position: static;
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  text-align: center;
+  padding-top: 15px;
+  background: none;
+}
+
+.portfolio .portfolio-info p {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 400;
+  color: #272829;
+}
+
+.portfolio .portfolio-info h4 {
+  display: none;
+}
+
