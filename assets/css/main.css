@@ -1425,3 +1425,120 @@ section,
   display: none;
 }
 
+/*-- video player styles */
+
+/*--------------------------------------------------------------
+# Simulation page
+--------------------------------------------------------------*/
+
+.simulation-card{
+    border:none;
+    border-radius:12px;
+}
+
+.simulation-card .card-header{
+    background:var(--surface-color);
+    border-bottom:1px solid color-mix(in srgb,
+                     var(--default-color), transparent 90%);
+}
+
+.video-container{
+    background:#000;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+#myVideo{
+    display:block;
+    width:100%;
+    height:auto;
+}
+
+.controls{
+    margin-top:20px;
+}
+
+.controls-row{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:15px;
+    margin-bottom:15px;
+}
+
+.progress-container{
+    flex:1;
+    min-width:250px;
+}
+
+.progress{
+    height:8px;
+    cursor:pointer;
+}
+
+.progress-bar{
+    transition:none;
+}
+
+.time-display{
+    min-width:95px;
+    font-family:monospace;
+}
+
+.volume-control,
+.speed-controls{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.speed-btn.active{
+    background:var(--accent-color);
+    color:#fff;
+}
+
+.card-footer{
+    font-size:0.9rem;
+    color:#777;
+}
+
+@media (max-width:768px){
+
+    .controls-row{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .progress-container{
+        width:100%;
+        min-width:100%;
+    }
+
+    .speed-controls{
+        justify-content:center;
+    }
+
+    .volume-control{
+        justify-content:center;
+    }
+
+}
+
+/* Wide screens */
+@media (min-aspect-ratio: 4/3) {
+    #myVideo {
+        width: auto;
+        max-width: 100%;
+        max-height: calc(100vh - 260px);
+        height: auto;
+    }
+}
+
+/* Tall/narrow screens */
+@media (max-aspect-ratio: 4/3) {
+    #myVideo {
+        width: 100%;
+        height: auto;
+        max-height: none;
+    }
+}
