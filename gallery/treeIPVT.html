@@ -38,96 +38,168 @@
     <style>
         /* --- Custom Video Player Styling --- */
 
-/* Main Container: Coherent with iPortfolio light theme */
-#video-wrapper {
-  background-color: #f4f7fa !important; /* Matches iPortfolio light background */
-  transition: all 0.3s ease;
-  border: 1px solid #e1e4e8;
-}
+        /* Main Container: Coherent with iPortfolio light theme */
+        #video-wrapper {
+          background-color: #f4f7fa !important;
+          transition: all 0.3s ease;
+          border: 1px solid #e1e4e8;
+          overflow: hidden; /* Prevents internal elements from leaking */
+        }
 
-/* Internal Container: Holds the video itself */
-.video-container-inner {
-  background-color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+        /* Internal Container: Holds the video itself */
+        .video-container-inner {
+          background-color: #f4f7fa; /* Match wrapper to hide seams */
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+        }
 
-/* Fullscreen Mode Fix: Remove large margins & fill screen */
-#video-wrapper:fullscreen {
-  background-color: #f4f7fa !important;
-  padding: 0 !important;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  border: none;
-  border-radius: 0 !important;
-}
+        /* THE FIX: Remove the 1px baseline gap and default black background */
+        #main-video {
+          display: block;       /* Fixes the bottom 1px gap */
+          vertical-align: top;  /* Double-insurance for alignment */
+          background-color: #f4f7fa; /* Matches the theme */
+          outline: none;
+          border: none;
+        }
 
-#video-wrapper:fullscreen .video-container-inner {
-  flex-grow: 1; /* Video area takes up all space except control bar */
-  background-color: #000000; /* Black bars only inside the video area */
-  border-radius: 0 !important;
-}
+        /* Fullscreen Mode Fix */
+        #video-wrapper:fullscreen {
+          background-color: #f4f7fa !important;
+          padding: 0 !important;
+          width: 100vw;
+          height: 100vh;
+          display: flex;
+          flex-direction: column;
+          border: none;
+        }
 
-#video-wrapper:fullscreen video {
-  max-height: 100% !important;
-  max-width: 100% !important;
-  height: auto;
-  width: auto;
-}
+        #video-wrapper:fullscreen .video-container-inner {
+          flex-grow: 1;
+          /* In fullscreen, we use a slightly darker version of the theme 
+             instead of pure black to keep it "coherent" */
+          background-color: #eef1f3; 
+        }
 
-#video-wrapper:fullscreen #control-bar {
-  padding: 15px 40px !important;
-  background-color: #f4f7fa;
-  border-top: 1px solid #ddd;
-}
+        #video-wrapper:fullscreen video {
+          max-height: 100% !important;
+          max-width: 100% !important;
+          height: auto;
+          width: auto;
+          /* Ensure video itself doesn't have a black background */
+          background-color: transparent !important; 
+        }
 
-/* --- Controls & Buttons --- */
+        #video-wrapper:fullscreen #control-bar {
+          padding: 15px 40px !important;
+          background-color: #f4f7fa;
+          border-top: 1px solid #ddd;
+        }
 
-/* Speed Buttons active state (iPortfolio Blue) */
-.speed-btn.active {
-  background-color: #0563bb !important; /* iPortfolio primary blue */
-  color: #fff !important;
-  border-color: #0563bb !important;
-}
+        /* --- Controls & Buttons --- */
 
-.speed-btn {
-  background-color: #fff;
-  color: #45505b;
-}
+        .speed-btn.active {
+          background-color: #0563bb !important;
+          color: #fff !important;
+          border-color: #0563bb !important;
+        }
 
-/* Current Speed Indicator Badge */
-#speed-indicator {
-  font-family: "Poppins", sans-serif;
-  font-size: 0.85rem;
-  padding: 5px 12px;
-  background: #eef1f3;
-  color: #0563bb;
-  font-weight: 600;
-}
+        .speed-btn {
+          background-color: #fff;
+          color: #45505b;
+        }
 
-/* --- Keyboard Shortcut Hint Popup --- */
+        #speed-indicator {
+          font-family: "Poppins", sans-serif;
+          font-size: 0.85rem;
+          padding: 5px 12px;
+          background: #fff;
+          color: #0563bb;
+          font-weight: 600;
+          border: 1px solid #dee2e6;
+        }
 
-.shortcut-container {
-  display: inline-block;
-}
+        /* --- Keyboard Shortcut Hint Popup --- */
 
-.shortcut-card {
-  position: absolute;
-  bottom: 150%;
-  right: 0;
-  width: 180px;
-  visibility: hidden;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: all 0.3s ease;
-  z-index: 1001;
-  pointer-events: none; /* Prevents card from interfering with mouse */
-}
+        .shortcut-container {
+          display: inline-block;
+        }
 
-/* Show Hint on H
+        .shortcut-card {
+          position: absolute;
+          bottom: 150%;
+          right: 0;
+          width: 180px;
+          visibility: hidden;
+          opacity: 0;
+          transform: translateY(10px);
+          transition: all 0.3s ease;
+          z-index: 1001;
+          background-color: #fff;
+        }
+
+        .shortcut-container:hover .shortcut-card {
+          visibility: visible;
+          opacity: 1;
+          transform: translateY(0);
+          bottom: 125%;
+        }
+
+        kbd {
+          background-color: #f8f9fa;
+          border: 1px solid #dee2e6;
+          border-radius: 3px;
+          box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+          color: #212529;
+          display: inline-block;
+          font-size: 0.75rem;
+          font-weight: 700;
+          padding: 2px 5px;
+        }
+
+        /* --- Progress Bar --- */
+        .progress {
+          background-color: #dee2e6 !important;
+        }
+
+        #video-progress {
+          transition: width 0.1s linear;
+        }
+        
+        /* Keep your existing .shortcut-card styles, but add/update these: */
+
+        .shortcut-card {
+          position: absolute;
+          bottom: 150%;
+          right: 0;
+          width: 180px;
+          visibility: hidden;
+          opacity: 0;
+          transform: translateY(10px);
+          transition: all 0.3s ease;
+          z-index: 1001;
+          background-color: #fff;
+          pointer-events: none; /* Prevents card from blocking clicks when invisible */
+        }
+
+        /* Logic for Hover (Desktop) */
+        .shortcut-container:hover .shortcut-card {
+          visibility: visible;
+          opacity: 1;
+          transform: translateY(0);
+          bottom: 125%;
+          pointer-events: auto;
+        }
+
+        /* Logic for Tap (Mobile - triggered by JS) */
+        .shortcut-card.active {
+          visibility: visible;
+          opacity: 1;
+          transform: translateY(0);
+          bottom: 125%;
+          pointer-events: auto;
+        }
     </style>
 </head>
 
@@ -238,7 +310,7 @@
                 <!-- FS & Hint -->
                 <div class="d-flex align-items-center gap-3">
                   <div class="shortcut-container position-relative">
-                    <i class="bi bi-question-circle-fill text-secondary" style="cursor: pointer; font-size: 1.2rem;"></i>
+                    <i class="bi bi-question-circle-fill text-secondary" id="hint-icon" style="cursor: pointer; font-size: 1.2rem;"></i>
                     <div class="shortcut-card shadow border rounded p-3 bg-white text-dark">
                       <h6 class="border-bottom pb-1" style="font-size: 0.9rem;">Shortcuts</h6>
                       <ul class="list-unstyled mb-0" style="font-size: 0.8rem;">
@@ -359,6 +431,28 @@
                         if (video.playbackRate > 0.25) setSpeed(video.playbackRate - 0.25); 
                         break;
                 }
+            });
+            
+            // Existing variables...
+            const hintIcon = document.getElementById('hint-icon');
+            const shortcutCard = document.querySelector('.shortcut-card');
+
+            // Toggle hint on click/tap
+            hintIcon.addEventListener('click', function(e) {
+                e.stopPropagation(); // Prevents the document click listener from firing immediately
+                shortcutCard.classList.toggle('active');
+            });
+
+            // Close hint if user taps anywhere else on the page
+            document.addEventListener('click', function(e) {
+                if (!shortcutCard.contains(e.target) && e.target !== hintIcon) {
+                    shortcutCard.classList.remove('active');
+                }
+            });
+
+            // Prevent the card itself from closing when clicked (so users can read it)
+            shortcutCard.addEventListener('click', function(e) {
+                e.stopPropagation();
             });
         });
     </script>
