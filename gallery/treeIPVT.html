@@ -1,457 +1,356 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Presentation Video Player</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Ali Khezeli's Personal Website</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="../assets/img/favicon.png" rel="icon">
+  <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="../assets/vendor/academicons/css/academicons.min.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="../assets/css/main.css" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: iPortfolio
+  * Template URL: https://bootstrapmade.com/iportfolio-bootstrap-portfolio-websites-template/
+  * Updated: Jun 29 2024 with Bootstrap v5.3.3
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        
-        body {
-            background: #111;
-            color: white;
-            font-family: Arial, sans-serif;
-            padding: 10px;
-            min-height: 100vh;
-        }
-        
-        .container {
-            max-width: 100%;
-            margin: 0 auto;
-        }
-        
-        .header {
-            text-align: center;
-            margin-bottom: 10px;
-        }
-        
-        h1 {
-            font-size: 1.5em;
-            margin-bottom: 5px;
-        }
-        
-        .header p {
-            color: #aaa;
-            font-size: 0.9em;
-        }
-        
-        .video-container {
-            background: black;
-            border-radius: 8px 8px 0 0;
-            overflow: hidden;
-            margin-bottom: 0;
-            width: 100%;
-        }
-        
-        #myVideo {
-            width: 100%;
-            height: auto;
-            display: block;
-            max-height: 90vh; /* Fits screen */
-        }
-        
-        /* Custom controls below video */
-        .controls {
-            background: #222;
-            padding: 12px 15px;
-            border-radius: 0 0 8px 8px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            width: 100%;
-        }
-        
-        .controls-row {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        button {
-            background: #444;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 13px;
-            transition: background 0.2s;
-            min-width: 60px;
-            white-space: nowrap;
-        }
-        
-        button:hover {
-            background: #555;
-        }
-        
-        .play-btn {
-            background: #0066cc;
-            font-weight: bold;
-        }
-        
-        .play-btn:hover {
-            background: #0077ee;
-        }
-        
-        .time-display {
-            color: #ccc;
-            font-family: monospace;
-            font-size: 13px;
-            min-width: 100px;
-        }
-        
-        .progress-container {
-            flex-grow: 1;
-            min-width: 150px;
-            max-width: 400px;
-        }
-        
-        progress {
-            width: 100%;
-            height: 6px;
-            border-radius: 3px;
-            cursor: pointer;
-        }
-        
-        progress::-webkit-progress-bar {
-            background-color: #333;
-            border-radius: 3px;
-        }
-        
-        progress::-webkit-progress-value {
-            background-color: #0066cc;
-            border-radius: 3px;
-        }
-        
-        /* Speed controls */
-        .speed-controls {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        
-        .speed-btn {
-            background: #333;
-            min-width: 35px;
-            padding: 4px 8px;
-            font-size: 12px;
-        }
-        
-        .speed-btn.active {
-            background: #0066cc;
-        }
-        
-        .speed-display {
-            color: #ccc;
-            font-size: 13px;
-            min-width: 50px;
-        }
-        
-        /* Volume control */
-        .volume-control {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        
-        input[type="range"] {
-            width: 60px;
-            cursor: pointer;
-        }
-        
-        .fullscreen-btn {
-            background: #333;
-        }
-        
-        .instructions {
-            color: #888;
-            font-size: 11px;
-            margin-top: 10px;
-            text-align: center;
-            line-height: 1.4;
-        }
-        
-        .shortcuts {
-            display: inline-block;
-            background: #222;
-            padding: 6px 10px;
-            border-radius: 4px;
-            margin-top: 5px;
-            font-family: monospace;
-            font-size: 11px;
-            max-width: 100%;
-            overflow-wrap: break-word;
-        }
-        
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .controls-row {
-                gap: 8px;
-            }
-            
-            button {
-                padding: 5px 10px;
-                font-size: 12px;
-                min-width: 50px;
-            }
-            
-            .time-display {
-                font-size: 12px;
-                min-width: 80px;
-            }
-            
-            .speed-btn {
-                min-width: 30px;
-                font-size: 11px;
-                padding: 3px 6px;
-            }
-            
-            #myVideo {
-                max-height: 50vh;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .controls {
-                padding: 10px;
-            }
-            
-            .controls-row {
-                flex-direction: column;
-                gap: 8px;
-            }
-            
-            .progress-container {
-                width: 100%;
-                max-width: none;
-            }
-            
-            #myVideo {
-                max-height: 40vh;
-            }
-        }
+        /* --- Custom Video Player Styling --- */
+
+/* Main Container: Coherent with iPortfolio light theme */
+#video-wrapper {
+  background-color: #f4f7fa !important; /* Matches iPortfolio light background */
+  transition: all 0.3s ease;
+  border: 1px solid #e1e4e8;
+}
+
+/* Internal Container: Holds the video itself */
+.video-container-inner {
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Fullscreen Mode Fix: Remove large margins & fill screen */
+#video-wrapper:fullscreen {
+  background-color: #f4f7fa !important;
+  padding: 0 !important;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  border: none;
+  border-radius: 0 !important;
+}
+
+#video-wrapper:fullscreen .video-container-inner {
+  flex-grow: 1; /* Video area takes up all space except control bar */
+  background-color: #000000; /* Black bars only inside the video area */
+  border-radius: 0 !important;
+}
+
+#video-wrapper:fullscreen video {
+  max-height: 100% !important;
+  max-width: 100% !important;
+  height: auto;
+  width: auto;
+}
+
+#video-wrapper:fullscreen #control-bar {
+  padding: 15px 40px !important;
+  background-color: #f4f7fa;
+  border-top: 1px solid #ddd;
+}
+
+/* --- Controls & Buttons --- */
+
+/* Speed Buttons active state (iPortfolio Blue) */
+.speed-btn.active {
+  background-color: #0563bb !important; /* iPortfolio primary blue */
+  color: #fff !important;
+  border-color: #0563bb !important;
+}
+
+.speed-btn {
+  background-color: #fff;
+  color: #45505b;
+}
+
+/* Current Speed Indicator Badge */
+#speed-indicator {
+  font-family: "Poppins", sans-serif;
+  font-size: 0.85rem;
+  padding: 5px 12px;
+  background: #eef1f3;
+  color: #0563bb;
+  font-weight: 600;
+}
+
+/* --- Keyboard Shortcut Hint Popup --- */
+
+.shortcut-container {
+  display: inline-block;
+}
+
+.shortcut-card {
+  position: absolute;
+  bottom: 150%;
+  right: 0;
+  width: 180px;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+  z-index: 1001;
+  pointer-events: none; /* Prevents card from interfering with mouse */
+}
+
+/* Show Hint on H
     </style>
 </head>
-<body>
-    <div class="container">
-        
-        <div class="video-container">
-            <video id="myVideo" poster="treeIPVT/treeIPVT.png">
-                <source src="treeIPVT/treeIPVT_animation.mp4" type="video/mp4">
-                Your browser does not support HTML5 video.
-            </video>
-        </div>
-        
-        <div class="controls">
-            <div class="controls-row">
-                <button class="play-btn" onclick="togglePlay()" id="playBtn">▶ Play</button>
-                <div class="time-display">
-                    <span id="currentTime">0:00</span> / 
-                    <span id="duration">0:00</span>
-                </div>
-                <div class="progress-container">
-                    <progress id="progressBar" value="0" max="100"></progress>
-                </div>
-            </div>
-            
-            <div class="controls-row">
-                <div class="volume-control">
-                    <button onclick="toggleMute()" id="muteBtn">🔊</button>
-                    <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="1">
-                </div>
-                
-                <div class="speed-controls">
-                    <span style="color:#aaa; font-size:13px;">Speed:</span>
-                    <button class="speed-btn" onclick="setSpeed(0.25)">0.25x</button>
-                    <button class="speed-btn" onclick="setSpeed(0.5)">0.5x</button>
-                    <button class="speed-btn active" onclick="setSpeed(1)">1x</button>
-                    <button class="speed-btn" onclick="setSpeed(2)">2x</button>
-                    <div class="speed-display" id="speedDisplay">1.0x</div>
-                </div>
-                
-                <button class="fullscreen-btn" onclick="toggleFullscreen()">⛶ Fullscreen</button>
-            </div>
-        </div>
-        
-        <div class="instructions">
-            <p>
-                <strong>Keyboard Shortcuts:</strong>
-                <div class="shortcuts">
-                    Space = Play/Pause • ← → = Seek 5s • ↑ ↓ = Speed • F = Fullscreen • M = Mute
-                </div>
-            </p>
-            <p>Close this window to return to the presentation.</p>
-        </div>
+
+<body class="index-page">
+
+  <header id="header" class="header dark-background d-flex flex-column">
+    <i class="header-toggle d-xl-none bi bi-list"></i>
+
+    <div class="profile-img">
+      <img src="../assets/img/my-profile-img.png" alt="" class="img-fluid rounded-circle">
     </div>
 
+    <a href="../index.html" class="logo d-flex align-items-center justify-content-center">
+      <!-- Uncomment the line below if you also wish to use an image logo -->
+      <!-- <img src="assets/img/logo.png" alt=""> -->
+      <h1 class="sitename">Ali Khezeli</h1>
+    </a>
+
+    <div class="social-links text-center">
+      <a href="https://www.ipm.ac.ir/personalinfo.jsp?PeopleCode=IP1600070"
+         target="_blank"
+         title="Academic Page">
+        <i class="ai ai-archive"></i>
+      </a>  
+      <a href="https://scholar.google.com/citations?user=rPXh3bAAAAAJ&hl=en"
+         target="_blank"
+         title="Google Scholar">
+        <i class="ai ai-google-scholar"></i>
+      </a>
+      <a href="https://arxiv.org/search/math?searchtype=author&query=Khezeli,+A"
+         target="_blank"
+         title="arXiv">
+        <i class="ai ai-arxiv"></i>
+      </a>
+      <a href="https://www.researchgate.net/profile/Ali-Khezeli"
+         target="_blank"
+         title="ResearchGate">
+        <i class="ai ai-researchgate"></i>
+      </a>
+      <a href="mailto:alikhezeli at ipm dot ir"
+         title="Email">
+        <i class="bi bi-envelope-fill"></i>
+      </a>
+    </div>
+
+    <nav id="navmenu" class="navmenu">
+      <ul>
+        <!--<li><a href="#hero" class="active"><i class="bi bi-house navicon"></i>Home</a></li>-->
+        <li><a href="../index.html" class="active"><i class="bi bi-person navicon"></i> About</a></li>
+        <li><a href="../publications.html"><i class="bi bi-hdd-stack navicon"></i> Publications</a></li>
+        <li><a href="../resume.html"><i class="bi bi-file-earmark-text navicon"></i> Resume</a></li>
+        <li><a href="../gallery.html"><i class="bi bi-images navicon"></i> Gallery</a></li>
+      </ul>
+    </nav>
+
+  </header>
+
+  <main class="main">
+     
+      <section id="custom-video-player" class="portfolio-details">
+          <div class="container">
+
+            <div class="section-title">
+              <h2>Video Presentation</h2>
+            </div>
+
+            <div id="video-wrapper" class="p-3 bg-light border rounded shadow-sm position-relative">
+
+              <div class="video-container-inner rounded overflow-hidden border bg-white">
+                <video id="main-video" style="max-width: 100%; max-height: 65vh; display: block; margin: 0 auto;">
+                  <source src="treeIPVT/treeIPVT_animation.mp4" type="video/mp4">
+                </video>
+              </div>
+
+              <div id="control-bar" class="d-flex flex-wrap align-items-center justify-content-between pt-3">
+
+                <!-- Play & Reset -->
+                <div class="d-flex align-items-center gap-2">
+                  <button id="btn-play" class="btn btn-primary rounded-circle shadow-sm" style="width: 45px; height: 45px;">
+                    <i class="bi bi-play-fill"></i>
+                  </button>
+                  <button id="btn-reset" class="btn btn-outline-secondary btn-sm" title="Reset"><i class="bi bi-arrow-counterclockwise"></i></button>
+                </div>
+
+                <!-- Speed Buttons + Indicator -->
+                <div class="d-flex align-items-center">
+                  <div class="btn-group shadow-sm">
+                    <button class="btn btn-sm btn-white border speed-btn" data-speed="0.25">.25x</button>
+                    <button class="btn btn-sm btn-white border speed-btn" data-speed="0.5">.5x</button>
+                    <button class="btn btn-sm btn-white border speed-btn active" data-speed="1">1x</button>
+                    <button class="btn btn-sm btn-white border speed-btn" data-speed="2">2x</button>
+                  </div>
+                  <!-- The Current Speed Display -->
+                  <span id="speed-indicator" class="ms-2 badge rounded-pill border text-dark fw-normal" style="background: #eef1f3; min-width: 45px;">1x</span>
+                </div>
+
+                <!-- FS & Hint -->
+                <div class="d-flex align-items-center gap-3">
+                  <div class="shortcut-container position-relative">
+                    <i class="bi bi-question-circle-fill text-secondary" style="cursor: pointer; font-size: 1.2rem;"></i>
+                    <div class="shortcut-card shadow border rounded p-3 bg-white text-dark">
+                      <h6 class="border-bottom pb-1" style="font-size: 0.9rem;">Shortcuts</h6>
+                      <ul class="list-unstyled mb-0" style="font-size: 0.8rem;">
+                        <li class="mb-1"><kbd>Space</kbd> Play</li>
+                        <li class="mb-1"><kbd>←</kbd> <kbd>→</kbd> Seek</li>
+                        <li><kbd>↑</kbd> <kbd>↓</kbd> Speed</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <button id="btn-fullscreen" class="btn btn-outline-dark btn-sm">
+                    <i class="bi bi-arrows-fullscreen"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="progress mt-3" style="height: 6px;">
+                <div id="video-progress" class="progress-bar bg-primary" style="width: 0%"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+  </main>
+
+  
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/vendor/php-email-form/validate.js"></script>
+  <script src="../assets/vendor/aos/aos.js"></script>
+  <script src="../assets/vendor/typed.js/typed.umd.js"></script>
+  <script src="../assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="../assets/vendor/waypoints/noframework.waypoints.js"></script>
+  <script src="../assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="../assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
+  <script src="../assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="../assets/vendor/swiper/swiper-bundle.min.js"></script>
+
+  <!-- Main JS File -->
+  <script src="../assets/js/main.js"></script>
+
     <script>
-        const video = document.getElementById('myVideo');
-        const progressBar = document.getElementById('progressBar');
-        const currentTimeEl = document.getElementById('currentTime');
-        const durationEl = document.getElementById('duration');
-        const playBtn = document.getElementById('playBtn');
-        const muteBtn = document.getElementById('muteBtn');
-        const volumeSlider = document.getElementById('volumeSlider');
-        const speedDisplay = document.getElementById('speedDisplay');
-        
-        let currentSpeed = 1.0;
-        
-        function formatTime(seconds) {
-            const mins = Math.floor(seconds / 60);
-            const secs = Math.floor(seconds % 60);
-            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-        }
-        
-        video.addEventListener('timeupdate', function() {
-            const progress = (video.currentTime / video.duration) * 100;
-            progressBar.value = progress;
-            currentTimeEl.textContent = formatTime(video.currentTime);
-        });
-        
-        video.addEventListener('loadedmetadata', function() {
-            durationEl.textContent = formatTime(video.duration);
-        });
-        
-        progressBar.addEventListener('click', function(e) {
-            const rect = this.getBoundingClientRect();
-            const pos = (e.clientX - rect.left) / rect.width;
-            video.currentTime = pos * video.duration;
-        });
-        
-        function togglePlay() {
-            if (video.paused) {
-                video.play();
-                playBtn.textContent = '⏸ Pause';
-            } else {
+        document.addEventListener('DOMContentLoaded', () => {
+            const wrapper = document.getElementById('video-wrapper');
+            const video = document.getElementById('main-video');
+            const playBtn = document.getElementById('btn-play');
+            const resetBtn = document.getElementById('btn-reset');
+            const fsBtn = document.getElementById('btn-fullscreen');
+            const speedBtns = document.querySelectorAll('.speed-btn');
+            const speedIndicator = document.getElementById('speed-indicator');
+            const progressBar = document.getElementById('video-progress');
+
+            function updatePlayIcon() {
+                playBtn.innerHTML = video.paused ? '<i class="bi bi-play-fill"></i>' : '<i class="bi bi-pause-fill"></i>';
+            }
+
+            function togglePlay() {
+                video.paused ? video.play() : video.pause();
+                updatePlayIcon();
+            }
+
+            function setSpeed(speed) {
+                const s = parseFloat(speed).toFixed(2);
+                const displaySpeed = parseFloat(s); // Remove trailing zeros
+                video.playbackRate = displaySpeed;
+
+                // Update Indicator Text
+                speedIndicator.innerText = displaySpeed + 'x';
+
+                // Highlight Button if it matches exactly
+                speedBtns.forEach(btn => {
+                    btn.classList.toggle('active', parseFloat(btn.dataset.speed) === displaySpeed);
+                });
+            }
+
+            // Button Listeners
+            playBtn.addEventListener('click', togglePlay);
+            resetBtn.addEventListener('click', () => {
+                video.currentTime = 0;
                 video.pause();
-                playBtn.textContent = '▶ Play';
-            }
-        }
-        
-        function setSpeed(speed) {
-            currentSpeed = speed;
-            video.playbackRate = speed;
-            speedDisplay.textContent = speed.toFixed(2) + 'x';
-            
-            document.querySelectorAll('.speed-btn').forEach(btn => {
-                btn.classList.remove('active');
+                updatePlayIcon();
             });
-            event.target.classList.add('active');
-        }
-        
-        function changeSpeed(delta) {
-            const speeds = [0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0];
-            let newSpeed = currentSpeed + delta;
-            
-            let closest = speeds.reduce((prev, curr) => {
-                return Math.abs(curr - newSpeed) < Math.abs(prev - newSpeed) ? curr : prev;
+            fsBtn.addEventListener('click', () => {
+                if (!document.fullscreenElement) wrapper.requestFullscreen();
+                else document.exitFullscreen();
             });
-            
-            closest = Math.max(0.25, Math.min(2.0, closest));
-            setSpeed(closest);
-        }
-        
-        volumeSlider.addEventListener('input', function() {
-            video.volume = this.value;
-            updateMuteButton();
-        });
-        
-        function toggleMute() {
-            video.muted = !video.muted;
-            updateMuteButton();
-        }
-        
-        function updateMuteButton() {
-            if (video.muted || video.volume === 0) {
-                muteBtn.textContent = '🔇';
-                volumeSlider.value = 0;
-            } else {
-                muteBtn.textContent = '🔊';
-                volumeSlider.value = video.volume;
-            }
-        }
-        
-        function toggleFullscreen() {
-            const container = document.querySelector('.video-container');
-            if (!document.fullscreenElement) {
-                if (container.requestFullscreen) {
-                    container.requestFullscreen();
+            speedBtns.forEach(btn => {
+                btn.addEventListener('click', () => setSpeed(btn.dataset.speed));
+            });
+
+            video.addEventListener('timeupdate', () => {
+                const percent = (video.currentTime / video.duration) * 100;
+                progressBar.style.width = percent + '%';
+            });
+
+            // Keyboard Listeners
+            window.addEventListener('keydown', (e) => {
+                const isVisible = !!(video.offsetWidth || video.offsetHeight);
+                if (!isVisible) return;
+
+                if(["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.code)) {
+                    e.preventDefault();
                 }
-            } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
+
+                switch(e.code) {
+                    case 'Space': togglePlay(); break;
+                    case 'ArrowRight': video.currentTime += 5; break;
+                    case 'ArrowLeft': video.currentTime -= 5; break;
+                    case 'ArrowUp': 
+                        if (video.playbackRate < 2) setSpeed(video.playbackRate + 0.25); 
+                        break;
+                    case 'ArrowDown': 
+                        if (video.playbackRate > 0.25) setSpeed(video.playbackRate - 0.25); 
+                        break;
                 }
-            }
-        }
-        
-        document.addEventListener('keydown', function(e) {
-            switch(e.code) {
-                case 'Space':
-                    e.preventDefault();
-                    togglePlay();
-                    break;
-                    
-                case 'ArrowLeft':
-                    e.preventDefault();
-                    video.currentTime = Math.max(0, video.currentTime - 5);
-                    break;
-                    
-                case 'ArrowRight':
-                    e.preventDefault();
-                    video.currentTime = Math.min(video.duration, video.currentTime + 5);
-                    break;
-                    
-                case 'ArrowUp':
-                    e.preventDefault();
-                    changeSpeed(0.25);
-                    break;
-                    
-                case 'ArrowDown':
-                    e.preventDefault();
-                    changeSpeed(-0.25);
-                    break;
-                    
-                case 'KeyF':
-                    e.preventDefault();
-                    toggleFullscreen();
-                    break;
-                    
-                case 'KeyM':
-                    e.preventDefault();
-                    toggleMute();
-                    break;
-                    
-                case 'Digit1':
-                case 'Numpad1':
-                    e.preventDefault();
-                    setSpeed(1.0);
-                    break;
-                    
-                case 'Digit2':
-                case 'Numpad2':
-                    e.preventDefault();
-                    setSpeed(2.0);
-                    break;
-            }
-        });
-        
-        video.load();
-        updateMuteButton();
-        
-        progressBar.addEventListener('keydown', function(e) {
-            if (e.code === 'ArrowLeft') {
-                video.currentTime = Math.max(0, video.currentTime - 5);
-            } else if (e.code === 'ArrowRight') {
-                video.currentTime = Math.min(video.duration, video.currentTime + 5);
-            }
+            });
         });
     </script>
 </body>
+
 </html>
